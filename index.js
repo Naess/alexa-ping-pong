@@ -53,10 +53,11 @@ exports.handler = (event, context) => {
             break;
 
           case "EndGame":
-          context.succeed(
-            generateResponse(
-              buildSpeechletResponse("Thanks for playing Ping Pong!", true)
-            )
+            context.succeed(
+              generateResponse(
+                buildSpeechletResponse("Thanks for playing Ping Pong!", true)
+              )
+            );
             // End the session here
             break;
 
