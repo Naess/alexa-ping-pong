@@ -35,6 +35,32 @@ exports.handler = (event, context) => {
             break;
 
           case "SubtractPoint":
+            var prompt = '',
+                team = event.request.intent.slots.TeamName.value || '';
+
+            event.session.attributes.team1 = event.session.attributes.team1 || 0;
+            event.session.attributes.team2 = event.session.attributes.team2 || 0;
+
+            if ((team.toLowerCase().indexOf('one') > -1) || (team.indexOf('1') > -1)) {
+              if (event.session.attributes.team1 > 0) {
+                event.session.attributes.team1--;
+              }
+              prompt+= readScore(event.session.attributes);
+            } else if ((team.toLowerCase().indexOf('two') > -1) || (team.indexOf('2') > -1)) {
+              if (event.session.attributes.team2 > 0) {
+                event.session.attributes.team2--;
+              }
+              prompt+= readScore(event.session.attributes);
+            } else {
+              prompt+="Sorry. I couldn't understand your command. Please say it again.";
+            }
+
+            context.succeed(
+                generateResponse(
+                    buildSpeechletResponse(prompt, false),
+                    event.session.attributes
+                )
+            );
             break;
 
           case "ResetGame":
