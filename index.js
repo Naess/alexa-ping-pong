@@ -43,7 +43,13 @@ exports.handler = (event, context) => {
             break;
 
           case "ReadScore":
-            readScore(event);
+            var scoreString = readScore(event);
+
+            context.succeed(
+              generateResponse(
+                buildSpeechletResponse("The current score is ".scoreString, true)
+              )
+            );
             break;
 
           case "EndGame":
@@ -104,7 +110,7 @@ generateResponse = (speechletResponse, sessionAttributes) => {
 }
 
 readScore = (attributes) => {
-    var responseString = "Team 1 Score is "+attributes.team1+". Team 2 Score is "+attributes.team2+".";
+    var responseString = "Team 1 has "+attributes.team1+". Team 2 has "+attributes.team2+".";
     return responseString;
 }
 
