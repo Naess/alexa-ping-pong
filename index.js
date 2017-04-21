@@ -43,6 +43,7 @@ exports.handler = (event, context) => {
             break;
 
           case "ReadScore":
+            readScore(event);
             break;
 
           case "EndGame":
@@ -102,11 +103,9 @@ generateResponse = (speechletResponse, sessionAttributes) => {
 
 }
 
-readScore = () => {
-          generateResponse(
-            buildSpeechletResponse("Player 1 Score is "+event.session.attributes.team1, false),
-            {team1: 0, team2: 0}
-          )
+readScore = (event) => {
+    var responseString = "Team 1 Score is "+event.session.attributes.team1+" Team 2 Score is "+event.session.attributes.team2;
+    return responseString
 }
 
 resetScore = (event) => {
