@@ -109,6 +109,61 @@ exports.handler = (event, context) => {
 
             break;
 
+          case "SetScore":
+            var prompt = '',
+                team1 = event.request.intent.slots.TeamName1.value || '',
+                pointValue1 = event.request.intent.slots.Point1.value || '',
+                team2 = event.request.intent.slots.TeamName2.value || '',
+                pointValue2 = event.request.intent.slots.Point2.value || '';
+
+            var pointsStringArray = [
+              'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
+              'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty',
+              'twentyone'
+            ];
+
+            var pointsNumberArray = [
+              '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+              '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
+              '21'
+            ];
+            var i = 0;
+
+            event.session.attributes.team1 = event.session.attributes.team1 || 0;
+            event.session.attributes.team2 = event.session.attributes.team2 || 0;
+
+            if ((team1.toLowerCase().indexOf('one') > -1) || (team1.indexOf('1') > -1)) {
+
+              for(i = 0; i < 22; i++)
+              {
+                if((pointValue1.toLowerCase().indexOf(pointsStringArray[i]) > -1) || (pointValue1.indexOf(pointsNumberArray[i]) > -1)) {
+                  event.session.attributes.team1 = i;
+                }
+              }
+
+            }
+
+            if ((team2.toLowerCase().indexOf('two') > -1) || (team2.indexOf('2') > -1)) {
+
+              for(i = 0; i < 22; i++)
+              {
+                if((pointValue2.toLowerCase().indexOf(pointsStringArray[i]) > -1) || (pointValue2.indexOf(pointsNumberArray[i]) > -1)) {
+                  event.session.attributes.team2 = i;
+                }
+              }
+
+            }
+
+            prompt+= readScore(event.session.attributes);
+
+            context.succeed(
+                generateResponse(
+                    buildSpeechletResponse(prompt, false),
+                    event.session.attributes
+                )
+            );
+            break;
+
           case "ReadScore":
             var scoreString = readScore(event.session.attributes);
 
