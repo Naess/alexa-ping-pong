@@ -198,7 +198,7 @@ buildSpeechletResponse = (outputText, shouldEndSession, reprompt) => {
     reprompt: {
       outputSpeech: {
         type: "PlainText",
-        text: reprompt || 'Hmm...'
+        text: reprompt || '.....................................................................................................................................................................................'
       }
     }
   }
