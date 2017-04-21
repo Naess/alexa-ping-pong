@@ -43,11 +43,11 @@ exports.handler = (event, context) => {
             break;
 
           case "ReadScore":
-            var scoreString = readScore(event);
+            var scoreString = readScore(event.session.attributes);
 
             context.succeed(
               generateResponse(
-                buildSpeechletResponse("The current score is ".scoreString, true)
+                buildSpeechletResponse("The current score is ".scoreString, false)
               )
             );
             break;
