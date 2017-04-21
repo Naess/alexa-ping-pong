@@ -106,6 +106,14 @@ exports.handler = (event, context) => {
               )
             );
 
+            var scoreString = readScore(event.session.attributes);
+            context.succeed(
+              generateResponse(
+                buildSpeechletResponse("The current score is "+scoreString, false),
+                event.session.attributes
+              )
+            );
+
             break;
 
           case "ReadScore":
