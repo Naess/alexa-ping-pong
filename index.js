@@ -1,4 +1,3 @@
-var https = require('https')
 
 exports.handler = (event, context) => {
 
@@ -17,7 +16,7 @@ exports.handler = (event, context) => {
         context.succeed(
           generateResponse(
             buildSpeechletResponse("Starting Ping Pong! Red Team 0, Blue Team 0!", false),
-            {team1: 0, team2: 0}
+            {team1: 0, team2: 0, gameOver: false}
           )
           // event.session.attributes.team1 // Access sample
           // event.session.attributes.team2 // Access sample
@@ -51,11 +50,13 @@ exports.handler = (event, context) => {
             if (event.session.attributes.team1 >= 21) {
               if (event.session.attributes.team1 > (event.session.attributes.team2 + 1)) { // Only if they've won by 2
                 prompt+= " Team 1 wins! Would you like to play again?";
+                event.session.attributes.gameOver = true;
               }
             }
             if (event.session.attributes.team2 >= 21) {
               if (event.session.attributes.team2 > (event.session.attributes.team1 + 1)) { // Only if they've won by 2
                 prompt+= " Team 2 wins! Would you like to play again?";
+                event.session.attributes.gameOver = true;
               }
             }
 
@@ -134,6 +135,43 @@ exports.handler = (event, context) => {
               )
             );
             // End the session here
+            break;
+
+          case "AMAZON.YesIntent":
+              var prompt = "Sorry. I couldn't understand your command. Please say it again.",
+                  endSession = true;
+
+            if (event.session.attributes.gameOver) {
+              prompt = "Starting Ping Pong! Red Team 0, Blue Team 0!";
+              endSession = false;
+              resetScore(event);
+              event.session.attributes.gameOver = false;
+            }
+
+            context.succeed(
+                generateResponse(
+                    buildSpeechletResponse(prompt, endSession),
+                    event.session.attributes
+                )
+            );
+
+            break;
+          case "AMAZON.NoIntent":
+            var prompt = "Sorry. I couldn't understand your command. Please say it again.",
+                endSession = false;
+
+            if (event.session.attributes.gameOver) {
+              prompt = "Thanks for playing Ping Pong!";
+              endSession = true;
+            }
+
+            context.succeed(
+                generateResponse(
+                    buildSpeechletResponse(prompt, endSession),
+                    event.session.attributes
+                )
+            );
+
             break;
 
           default:
