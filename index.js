@@ -28,36 +28,42 @@ exports.handler = (event, context) => {
 
       case "IntentRequest":
         // Intent Request
-        console.log(`INTENT REQUEST`)
 
         switch(event.request.intent.name) {
           case "AddPoint":
 
-           console.log(`ADD POINT`)
-           console.log(event.request.intent.slots.TeamName)
-           var team = event.request.intent.slots.TeamName;
-           var message = ''
-           // If the user mentioned a team name
-           if (team && team.length > 0) {
-             if (team.includes('1') || team.includes('one')) { // If it's team 1
-              event.session.attributes.team1 += 1
-              message = "Team one's score has been incremented."
-             } else if (team.includes('2') || team.includes('two')){ // If it's team 2
-              event.session.attributes.team2 += 1
-              message = "Team two's score has been incremented."
-             } else { // Name not understood
-              message = "I didn't understand that team name. Please repeat it."
-             }
-           } else { // No team name mentioned
-            message = "I didn't understand that team name. Please repeat it."
-           }
+            var prompt = '',
+                team = event.request.intent.slots.TeamName.value || '';
+
+            event.session.attributes.team1 = event.session.attributes.team1 || 0;
+            event.session.attributes.team2 = event.session.attributes.team2 || 0;
+
+            if ((team.toLowerCase().indexOf('one') > -1) || (team.indexOf('1') > -1)) {
+              if (event.session.attributes.team1 < 21) {
+                event.session.attributes.team1++;
+              }
+              prompt+= readScore(event.session.attributes);
+            } else if ((team.toLowerCase().indexOf('two') > -1) || (team.indexOf('2') > -1)) {
+              if (event.session.attributes.team2 < 21) {
+                event.session.attributes.team2++;
+              }
+              prompt+= readScore(event.session.attributes);
+            } else {
+              prompt+="Sorry. I couldn't understand your command. Please say it again.";
+            }
+
+            if (event.session.attributes.team1 >= 21) {
+              prompt+= " Team 1 wins! Would you like to play again?";
+            } else if (event.session.attributes.team2 >= 21) {
+              prompt+= " Team 2 wins! Would you like to play again?";
+            }
 
             context.succeed(
-              generateResponse(
-                buildSpeechletResponse(message, false),
-                {team1: 0, team2: 0}
-              )
-            )
+                generateResponse(
+                    buildSpeechletResponse(prompt, false),
+                    event.session.attributes
+                )
+            );
             break;
 
           case "SubtractPoint":
