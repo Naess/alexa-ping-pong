@@ -103,18 +103,9 @@ generateResponse = (speechletResponse, sessionAttributes) => {
 
 }
 
-<<<<<<< HEAD
-readScore = (event) => {
-    var responseString = "Team 1 Score is "+event.session.attributes.team1+" Team 2 Score is "+event.session.attributes.team2;
-=======
 readScore = (attributes) => {
-<<<<<<< Updated upstream
-    var responseString = "Team 1 Score is "+attributes.team1+" Team 2 Score is "+attributes.team2;
->>>>>>> 251722af50377693379fbbd6552fd9f91afb88ca
-=======
     var responseString = "Team 1 Score is "+attributes.team1+". Team 2 Score is "+attributes.team2+".";
->>>>>>> Stashed changes
-    return responseString
+    return responseString;
 }
 
 resetScore = (event) => {
