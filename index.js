@@ -1,4 +1,3 @@
-
 exports.handler = (event, context) => {
 
   try {
