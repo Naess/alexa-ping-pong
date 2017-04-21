@@ -14,7 +14,7 @@ exports.handler = (event, context) => {
         console.log(`LAUNCH REQUEST`)
         context.succeed(
           generateResponse(
-            buildSpeechletResponse("Starting Ping Pong! Red Team 0, Blue Team 0!", false),
+            buildSpeechletResponse("Starting Ping Pong! Team 1 0, Team 2 0!", false),
             {team1: 0, team2: 0, gameOver: false}
           )
           // event.session.attributes.team1 // Access sample
@@ -143,7 +143,7 @@ exports.handler = (event, context) => {
             if (event.session.attributes.gameOver) {
               prompt = "Starting Ping Pong! Red Team 0, Blue Team 0!";
               endSession = false;
-              resetScore(event);
+              resetScore(event.session.attributes);
               event.session.attributes.gameOver = false;
             }
 
