@@ -24,7 +24,7 @@ exports.handler = (event, context) => {
           // event.session.attributes.team1 // Access sample
           // event.session.attributes.team2 // Access sample
           // Read Score
-          readScore(event);
+          readScore(event.session.attributes);
         )
         break;
 
@@ -99,8 +99,8 @@ generateResponse = (speechletResponse, sessionAttributes) => {
 
 }
 
-readScore = (event) => {
-    var responseString = "Team 1 Score is "+event.session.attributes.team1+" Team 2 Score is "+event.session.attributes.team2;
+readScore = (attributes) => {
+    var responseString = "Team 1 Score is "+attributes.team1+" Team 2 Score is "+attributes.team2;
     return responseString
 }
 
