@@ -19,13 +19,11 @@ exports.handler = (event, context) => {
             buildSpeechletResponse("Starting Ping Pong! Red Team 0, Blue Team 0!", false),
             {team1: 0, team2: 0}
           )
-          // Intialize the score
-          resetScore(event);
           // event.session.attributes.team1 // Access sample
           // event.session.attributes.team2 // Access sample
-          // Read Score
-          // readScore(event.session.attributes);
         )
+        // Intialize the score
+        resetScore(event);
         break;
 
       case "IntentRequest":
