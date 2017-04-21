@@ -16,9 +16,15 @@ exports.handler = (event, context) => {
         console.log(`LAUNCH REQUEST`)
         context.succeed(
           generateResponse(
-            buildSpeechletResponse("Welcome to an Alexa Skill, this is running on a deployed lambda function", true),
-            {}
+            buildSpeechletResponse("Starting Ping Pong", false),
+            {team1: 0, team2: 0}
           )
+          // Intialize the score
+          resetScore(event);
+          // event.session.attributes.team1 // Access sample
+          // event.session.attributes.team2 // Access sample
+          // Read Score
+          readScore(event);
         )
         break;
 
@@ -27,59 +33,20 @@ exports.handler = (event, context) => {
         console.log(`INTENT REQUEST`)
 
         switch(event.request.intent.name) {
-          case "GetSubscriberCount":
-            var endpoint = "" // ENDPOINT GOES HERE
-            var body = ""
-            https.get(endpoint, (response) => {
-              response.on('data', (chunk) => { body += chunk })
-              response.on('end', () => {
-                var data = JSON.parse(body)
-                var subscriberCount = data.items[0].statistics.subscriberCount
-                context.succeed(
-                  generateResponse(
-                    buildSpeechletResponse(`Current subscriber count is ${subscriberCount}`, true),
-                    {}
-                  )
-                )
-              })
-            })
+          case "AddPoint":
             break;
 
-          case "GetVideoViewCount":
-            var endpoint = "" // ENDPOINT GOES HERE
-            var body = ""
-            https.get(endpoint, (response) => {
-              response.on('data', (chunk) => { body += chunk })
-              response.on('end', () => {
-                var data = JSON.parse(body)
-                var viewCount = data.items[0].statistics.viewCount
-                context.succeed(
-                  generateResponse(
-                    buildSpeechletResponse(`Current view count is ${viewCount}`, true),
-                    {}
-                  )
-                )
-              })
-            })
+          case "SubtractPoint":
             break;
 
-          case "GetVideoViewCountSinceDate":
-            console.log(event.request.intent.slots.SinceDate.value)
-            var endpoint = "" // ENDPOINT GOES HERE
-            var body = ""
-            https.get(endpoint, (response) => {
-              response.on('data', (chunk) => { body += chunk })
-              response.on('end', () => {
-                var data = JSON.parse(body)
-                var viewCount = data.items[0].statistics.viewCount
-                context.succeed(
-                  generateResponse(
-                    buildSpeechletResponse(`Current view count is ${viewCount}`, true),
-                    {}
-                  )
-                )
-              })
-            })
+          case "ResetGame":
+            break;
+
+          case "ReadScore":
+            break;
+
+          case "EndGame":
+            // End the session here
             break;
 
           default:
@@ -103,14 +70,20 @@ exports.handler = (event, context) => {
 }
 
 // Helpers
-buildSpeechletResponse = (outputText, shouldEndSession) => {
+buildSpeechletResponse = (outputText, shouldEndSession, reprompt) => {
 
   return {
     outputSpeech: {
       type: "PlainText",
       text: outputText
     },
-    shouldEndSession: shouldEndSession
+    shouldEndSession: shouldEndSession,
+    reprompt: {
+      outputSpeech: {
+        type: "PlainText",
+        text: reprompt || ''
+      }
+    }
   }
 
 }
@@ -123,4 +96,16 @@ generateResponse = (speechletResponse, sessionAttributes) => {
     response: speechletResponse
   }
 
+}
+
+readScore = () => {
+          generateResponse(
+            buildSpeechletResponse("Player 1 Score is "+event.session.attributes.team1, false),
+            {team1: 0, team2: 0}
+          )
+}
+
+resetScore = (event) => {
+  event.session.attributes.team1 = 0;
+  event.session.attributes.team2 = 0;
 }
