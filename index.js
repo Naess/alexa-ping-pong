@@ -32,6 +32,32 @@ exports.handler = (event, context) => {
 
         switch(event.request.intent.name) {
           case "AddPoint":
+
+           console.log(`ADD POINT`)
+           console.log(event.request.intent.slots.TeamName)
+           var team = event.request.intent.slots.TeamName;
+           var message = ''
+           // If the user mentioned a team name
+           if (team && team.length > 0) {
+             if (team.includes('1') || team.includes('one')) { // If it's team 1
+              event.session.attributes.team1 += 1
+              message = "Team one's score has been incremented."
+             } else if (team.includes('2') || team.includes('two')){ // If it's team 2
+              event.session.attributes.team2 += 1
+              message = "Team two's score has been incremented."
+             } else { // Name not understood
+              message = "I didn't understand that team name. Please repeat it."
+             }
+           } else { // No team name mentioned
+            message = "I didn't understand that team name. Please repeat it."
+           }
+
+            context.succeed(
+              generateResponse(
+                buildSpeechletResponse(message, false),
+                {team1: 0, team2: 0}
+              )
+            )
             break;
 
           case "SubtractPoint":
