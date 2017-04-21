@@ -48,13 +48,31 @@ exports.handler = (event, context) => {
 
             if (event.session.attributes.team1 >= 21) {
               if (event.session.attributes.team1 > (event.session.attributes.team2 + 1)) { // Only if they've won by 2
-                prompt+= " Team 1 wins! Would you like to play again?";
+                var win_threshold = event.session.attributes.team2 / event.session.attributes.team1
+
+                if (win_threshold > .7) {
+                    prompt+= "Team 1 destroyed Team 2!"
+                } else if (win_threshold > .5) {
+                    prompt+= "Team 1 easily handled Team 2!"
+                } else if (win_threshold > .2) {
+                    prompt+= "Team 1 pulls out a squeaker over Team 2!"
+                }
+                prompt+= "  Would you like to play again?";
                 event.session.attributes.gameOver = true;
               }
             }
             if (event.session.attributes.team2 >= 21) {
               if (event.session.attributes.team2 > (event.session.attributes.team1 + 1)) { // Only if they've won by 2
-                prompt+= " Team 2 wins! Would you like to play again?";
+                var win_threshold = event.session.attributes.team1 / event.session.attributes.team2
+
+                if (win_threshold > .7) {
+                    prompt+= "Team 2 destroyed Team 1!"
+                } else if (win_threshold > .5) {
+                    prompt+= "Team 2 easily handled Team 1!"
+                } else if (win_threshold > .2) {
+                    prompt+= "Team 2 pulls out a squeaker over Team 1!"
+                }
+                prompt+= "  Would you like to play again?";
                 event.session.attributes.gameOver = true;
               }
             }
@@ -189,7 +207,7 @@ exports.handler = (event, context) => {
                   endSession = true;
 
             if (event.session.attributes.gameOver) {
-              prompt = "Starting Ping Pong! Red Team 0, Blue Team 0!";
+              prompt = "Starting Ping Pong! Team One 0, Team Two 0!";
               endSession = false;
               resetScore(event.session.attributes);
               event.session.attributes.gameOver = false;
