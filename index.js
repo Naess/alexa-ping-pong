@@ -51,11 +51,11 @@ exports.handler = (event, context) => {
                 var win_threshold = event.session.attributes.team2 / event.session.attributes.team1
 
                 if (win_threshold > .7) {
-                    prompt+= "Team 1 destroyed Team 2!"
-                } else if (win_threshold > .5) {
-                    prompt+= "Team 1 easily handled Team 2!"
-                } else if (win_threshold > .2) {
-                    prompt+= "Team 1 pulls out a squeaker over Team 2!"
+                    prompt+= "  Team 1 pulls out a squeaker over Team 2!"
+                } else if (win_threshold > .05) {
+                    prompt+= "  Team 1 easily handled Team 2!"
+                } else if (win_threshold > .02) {
+                    prompt+= "  Team 1 destroyed Team 2!"
                 }
                 prompt+= "  Would you like to play again?";
                 event.session.attributes.gameOver = true;
@@ -66,11 +66,11 @@ exports.handler = (event, context) => {
                 var win_threshold = event.session.attributes.team1 / event.session.attributes.team2
 
                 if (win_threshold > .7) {
-                    prompt+= "Team 2 destroyed Team 1!"
-                } else if (win_threshold > .5) {
-                    prompt+= "Team 2 easily handled Team 1!"
-                } else if (win_threshold > .2) {
-                    prompt+= "Team 2 pulls out a squeaker over Team 1!"
+                    prompt+= "  Team 2 pulls out a squeaker over Team 1!"
+                } else if (win_threshold > .05) {
+                    prompt+= "  Team 2 easily handled Team 1!"
+                } else if (win_threshold > .02) {
+                    prompt+= "  Team 2 destroyed Team 1!"
                 }
                 prompt+= "  Would you like to play again?";
                 event.session.attributes.gameOver = true;
