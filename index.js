@@ -24,7 +24,7 @@ exports.handler = (event, context) => {
           // event.session.attributes.team1 // Access sample
           // event.session.attributes.team2 // Access sample
           // Read Score
-          readScore(event.session.attributes);
+          // readScore(event.session.attributes);
         )
         break;
 
