@@ -97,6 +97,7 @@ exports.handler = (event, context) => {
             break;
 
           case "ResetGame":
+            resetScore(event.session.attributes);
             break;
 
           case "ReadScore":
@@ -173,7 +174,7 @@ readScore = (attributes) => {
     return responseString;
 }
 
-resetScore = (event) => {
-  event.session.attributes.team1 = 0;
-  event.session.attributes.team2 = 0;
+resetScore = (attributes) => {
+  attributes.team1 = 0;
+  attributes.team2 = 0;
 }
