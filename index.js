@@ -47,7 +47,8 @@ exports.handler = (event, context) => {
 
             context.succeed(
               generateResponse(
-                buildSpeechletResponse("The current score is ".scoreString, false)
+                buildSpeechletResponse("The current score is ".scoreString, false),
+                event.session.attributes
               )
             );
             break;
