@@ -99,17 +99,10 @@ exports.handler = (event, context) => {
           case "ResetGame":
             resetScore(event.session.attributes);
 
-            context.succeed(
-              generateResponse(
-                buildSpeechletResponse("The game has been reset.", false),
-                event.session.attributes
-              )
-            );
-
             var scoreString = readScore(event.session.attributes);
             context.succeed(
               generateResponse(
-                buildSpeechletResponse("The current score is "+scoreString, false),
+                buildSpeechletResponse("The game has been reset, the current score is "+scoreString, false),
                 event.session.attributes
               )
             );
