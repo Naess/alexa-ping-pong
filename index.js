@@ -39,23 +39,24 @@ exports.handler = (event, context) => {
             event.session.attributes.team2 = event.session.attributes.team2 || 0;
 
             if ((team.toLowerCase().indexOf('one') > -1) || (team.indexOf('1') > -1)) {
-              if (event.session.attributes.team1 < 21) {
-                event.session.attributes.team1++;
-              }
+              event.session.attributes.team1++;
               prompt+= readScore(event.session.attributes);
             } else if ((team.toLowerCase().indexOf('two') > -1) || (team.indexOf('2') > -1)) {
-              if (event.session.attributes.team2 < 21) {
-                event.session.attributes.team2++;
-              }
+              event.session.attributes.team2++;
               prompt+= readScore(event.session.attributes);
             } else {
               prompt+="Sorry. I couldn't understand your command. Please say it again.";
             }
 
             if (event.session.attributes.team1 >= 21) {
-              prompt+= " Team 1 wins! Would you like to play again?";
-            } else if (event.session.attributes.team2 >= 21) {
-              prompt+= " Team 2 wins! Would you like to play again?";
+              if (event.session.attributes.team1 > (event.session.attributes.team2 + 1)) { // Only if they've won by 2
+                prompt+= " Team 1 wins! Would you like to play again?";
+              }
+            }
+            if (event.session.attributes.team2 >= 21) {
+              if (event.session.attributes.team2 > (event.session.attributes.team1 + 1)) { // Only if they've won by 2
+                prompt+= " Team 2 wins! Would you like to play again?";
+              }
             }
 
             context.succeed(
