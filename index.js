@@ -16,7 +16,7 @@ exports.handler = (event, context) => {
         console.log(`LAUNCH REQUEST`)
         context.succeed(
           generateResponse(
-            buildSpeechletResponse("Starting Ping Pong", false),
+            buildSpeechletResponse("Starting Ping Pong! Red Team 0, Blue Team 0!", false),
             {team1: 0, team2: 0}
           )
           // Intialize the score
@@ -24,7 +24,7 @@ exports.handler = (event, context) => {
           // event.session.attributes.team1 // Access sample
           // event.session.attributes.team2 // Access sample
           // Read Score
-          readScore(event);
+        //   readScore(event);
         )
         break;
 
@@ -46,6 +46,10 @@ exports.handler = (event, context) => {
             break;
 
           case "EndGame":
+          context.succeed(
+            generateResponse(
+              buildSpeechletResponse("Thanks for playing Ping Pong!", true)
+            )
             // End the session here
             break;
 
